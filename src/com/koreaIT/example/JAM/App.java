@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.koreaIT.example.JAM.controller.MemberController;
 import com.koreaIT.example.JAM.util.DBUtil;
 import com.koreaIT.example.JAM.util.SecSql;
 
@@ -49,6 +50,9 @@ public class App {
 		sc.close();
 	}
 	private int doAction(Connection conn, String cmd, Scanner sc) {
+		
+		MemberController memberController = new MemberController(sc, conn);
+		
 		if (cmd.equals("exit")) {
 			return -1;
 		}
@@ -200,96 +204,7 @@ public class App {
 		
 		if (cmd.equals("member join")) {
 			
-			String name = null;
-			String loginId = null;
-			String loginPw = null;
-			String loginPwCheck = null;
-			
-			while (true) {
-				
-				System.out.println("이름 : ");
-				name = sc.nextLine().trim();
-				
-				if(name.length() == 0) {
-					System.out.println("이름을 입력해주세요.");
-					continue;
-				}
-				
-				break;
-			}
-			
-			while (true) {
-				
-				System.out.println("아이디 : ");
-				loginId = sc.nextLine();
-				
-				if(name.length() == 0) {
-					System.out.println("아이디을 입력해주세요.");
-					continue;
-				}
-				
-				SecSql sql = new SecSql();
-				
-				sql.append("SELECT COUNT(*) > 0");
-				sql.append("FROM `member`");
-				sql.append("WHERE loginId = ?", loginId);
-				
-				boolean isLoginId = DBUtil.selectRowBooleanValue(conn, sql);
-				
-				if (isLoginId) {
-					System.out.println("이미 사용중인 아이디 입니다.");
-					continue;
-				}
-				break;
-			}
-			
-			while (true) {
-				
-				System.out.println("비밀번호 : ");
-				loginPw = sc.nextLine();
-				
-				if(name.length() == 0) {
-					System.out.println("비밀번호를 입력해주세요.");
-					continue;
-				}
-				
-				while (true) {
-					
-					System.out.println("비밀번호 확인 : ");
-					loginPwCheck = sc.nextLine();
-					
-					if(loginPwCheck.length() == 0) {
-						System.out.println("비밀번호 확인을 입력해주세요.");
-						continue;
-					}
-					
-					break;
-
-				}
-				
-				if (loginPw.equals(loginPwCheck) == false) {
-					
-					System.out.println("비밀번호가 틀립니다.");
-					System.out.println("비밀번호를 다시 입력해 주세요.");
-					
-					continue;
-				}
-				break;
-				
-			}
-			
-			SecSql sql = new SecSql();
-			sql.append("INSERT INTO `member`");
-			sql.append("SET regDate = NOW(),");
-			sql.append("updateDate = NOW(),");
-			sql.append("loginId = ?,", loginId);
-			sql.append("loginPw = ?,", loginPw);
-			sql.append("name = ?", name);
-			
-			
-			DBUtil.insert(conn, sql);
-			
-			System.out.println("회원가입 되었습니다.");
+			memberController.doJOin();
 			
 			
 		}
