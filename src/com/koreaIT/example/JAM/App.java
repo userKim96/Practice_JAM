@@ -1,7 +1,6 @@
 package com.koreaIT.example.JAM;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +71,7 @@ public class App {
 			System.out.printf("%d번 게시글이 생성되었습니다\n", id);
 
 		} else if (cmd.equals("article list")) {
-			System.out.println("==게시물 목록==");
+			
 			
 			ArrayList<Article> articles = new ArrayList<Article>();
 			
@@ -91,39 +90,60 @@ public class App {
 				System.out.println("게시글이 없습니다");
 				return 0;
 			}
+			
+			System.out.println("==게시물 목록==");
+			
 			System.out.println("번호   /   제목");
 			for (Article article : articles) {
 				System.out.printf("%4d   /   %s\n", article.id, article.title);
 			}
-		} else if (cmd.startsWith("article modify")) {
-			System.out.println("==게시물 수정==");
+		} 
+		else if(cmd.startsWith("article modify")) {
+			
+			if (cmd.equals("article modify")) {
+				System.out.println("게시물 번호를 입력해 주세요.");
+				return 0;
+			}
+			
 			int id = Integer.parseInt(cmd.split(" ")[2]);
+			
+			
+			
+			SecSql sql = SecSql.from("SELECT COUNT(*) > 0");
+			sql.append("FROM article");
+			sql.append("WHERE id = ?", id);
+			
+			int articleCount = DBUtil.selectRowIntValue(conn, sql);
+
+			if (articleCount == 0) {
+				System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
+				return 0;
+			}
+				
+			System.out.printf("== %d번 게시물 수정 ==\n", id);
 			System.out.printf("새 제목 : ");
 			String newTitle = sc.nextLine();
 			System.out.printf("새 내용 : ");
 			String newBody = sc.nextLine();
-			PreparedStatement pstmt = null;
-			try {
-				String sql = "UPDATE article";
-				sql += " SET updateDate = NOW(),";
-				sql += " title = '" + newTitle + "',";
-				sql += " `body` = '" + newBody + "'";
-				sql += " WHERE id = " + id + ";";
-				System.out.println(sql);
-				pstmt = conn.prepareStatement(sql);
-				pstmt.executeUpdate();
-			} catch (SQLException e) {
-				System.out.println("에러 : " + e);
-			} finally {
-				try {
-					if (pstmt != null && !pstmt.isClosed()) {
-						pstmt.close();
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			
+			sql = new SecSql();
+			sql.append("UPDATE article");
+			sql.append("SET updateDate = NOW(),");
+			sql.append("title = ?,", newTitle);
+			sql.append("`body` = ?", newBody);
+			sql.append("WHERE id = ?", id);
+			
+			DBUtil.update(conn, sql);
+			
 			System.out.println(id + "번 글이 수정되었습니다");
+
+
+
+			
+		
+			
+			
+			
 		}
 		return 0;
 	}
