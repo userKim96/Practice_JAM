@@ -137,9 +137,9 @@ public class App {
 			
 			System.out.println(id + "번 글이 수정되었습니다");
 		}
-		else if (cmd.startsWith("article ditail")) {
+		else if (cmd.startsWith("article detail")) {
 			
-			if (cmd.equals("article ditail")) {
+			if (cmd.equals("article detail")) {
 				System.out.println("게시물 번호를 입력해 주세요.");
 				return 0;
 			}
