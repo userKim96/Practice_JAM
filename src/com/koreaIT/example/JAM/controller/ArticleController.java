@@ -54,4 +54,34 @@ public class ArticleController {
 		
 	}
 
+	public void doModify(String cmd) {
+		
+		if (cmd.equals("article modify")) {
+			System.out.println("게시물 번호를 입력해 주세요.");
+			return;
+		}
+		
+		int id = Integer.parseInt(cmd.split(" ")[2]);
+		
+
+		int articleCount = articleService.articleCount(id);
+
+		if (articleCount == 0) {
+			System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
+			return;
+		}
+			
+		System.out.printf("== %d번 게시물 수정 ==\n", id);
+		System.out.printf("새 제목 : ");
+		String newTitle = sc.nextLine();
+		System.out.printf("새 내용 : ");
+		String newBody = sc.nextLine();
+		
+		
+		articleService.doModify(newTitle, newBody, id);
+		
+		System.out.println(id + "번 글이 수정되었습니다");
+		
+	}
+
 }

@@ -34,9 +34,30 @@ public class ArticleDao {
 		sql.append("SELECT *");
 		sql.append("FROM article");
 		sql.append("ORDER BY id DESC;");
-		
-		
+
 		return DBUtil.selectRows(conn, sql);
+	}
+
+	public int articleCount(int id) {
+		
+		SecSql sql = SecSql.from("SELECT COUNT(*) > 0");
+		sql.append("FROM article");
+		sql.append("WHERE id = ?", id);
+		
+		return DBUtil.selectRowIntValue(conn, sql);
+	}
+
+	public void doModify(String newTitle, String newBody, int id) {
+
+		SecSql sql = new SecSql();
+		sql.append("UPDATE article");
+		sql.append("SET updateDate = NOW(),");
+		sql.append("title = ?,", newTitle);
+		sql.append("`body` = ?", newBody);
+		sql.append("WHERE id = ?", id);
+		
+		DBUtil.update(conn, sql);
+		
 	}
 	
 	
