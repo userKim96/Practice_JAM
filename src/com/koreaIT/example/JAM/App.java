@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.koreaIT.example.JAM.controller.ArticleController;
 import com.koreaIT.example.JAM.controller.MemberController;
 import com.koreaIT.example.JAM.util.DBUtil;
 import com.koreaIT.example.JAM.util.SecSql;
@@ -52,27 +53,14 @@ public class App {
 	private int doAction(Connection conn, String cmd, Scanner sc) {
 		
 		MemberController memberController = new MemberController(sc, conn);
+		ArticleController articleController = new ArticleController(sc, conn);
 		
 		if (cmd.equals("exit")) {
 			return -1;
 		}
 		if (cmd.equals("article write")) {
-			System.out.println("==게시물 작성==");
-			System.out.printf("제목 : ");
-			String title = sc.nextLine();
-			System.out.printf("내용 : ");
-			String body = sc.nextLine();
-
-			SecSql sql = new SecSql();
-			sql.append("INSERT INTO article");
-			sql.append("SET regDate = NOW(),");
-			sql.append("updateDate = NOW(),");
-			sql.append("title = ?,", title);
-			sql.append("`body` = ?", body);
-
-			int id = DBUtil.insert(conn, sql);
-
-			System.out.printf("%d번 게시글이 생성되었습니다\n", id);
+			
+			articleController.doWrite();
 
 		} else if (cmd.equals("article list")) {
 			
