@@ -1,6 +1,8 @@
 package com.koreaIT.example.JAM.dao;
 
 import java.sql.Connection;
+import java.util.List;
+import java.util.Map;
 
 import com.koreaIT.example.JAM.util.DBUtil;
 import com.koreaIT.example.JAM.util.SecSql;
@@ -24,6 +26,17 @@ public class ArticleDao {
 		
 		return DBUtil.insert(conn, sql);
 		
+	}
+
+	public List<Map<String, Object>> showList() {
+		
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM article");
+		sql.append("ORDER BY id DESC;");
+		
+		
+		return DBUtil.selectRows(conn, sql);
 	}
 	
 	

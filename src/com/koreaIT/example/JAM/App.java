@@ -59,36 +59,11 @@ public class App {
 			return -1;
 		}
 		if (cmd.equals("article write")) {
-			
 			articleController.doWrite();
 
 		} else if (cmd.equals("article list")) {
+			articleController.showList();
 			
-			
-			ArrayList<Article> articles = new ArrayList<Article>();
-			
-			SecSql sql = new SecSql();
-			sql.append("SELECT *");
-			sql.append("FROM article");
-			sql.append("ORDER BY id DESC;");
-			
-			List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
-			
-			for(Map<String, Object> articleMap : articleListMap) {
-				articles.add(new Article(articleMap));
-			}
-
-			if (articles.size() == 0) {
-				System.out.println("게시글이 없습니다");
-				return 0;
-			}
-			
-			System.out.println("==게시물 목록==");
-			
-			System.out.println("번호   /   제목");
-			for (Article article : articles) {
-				System.out.printf("%4d   /   %s\n", article.id, article.title);
-			}
 		} 
 		else if(cmd.startsWith("article modify")) {
 			
