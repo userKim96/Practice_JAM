@@ -59,6 +59,15 @@ public class ArticleDao {
 		DBUtil.update(conn, sql);
 		
 	}
+
+	public Map<String, Object> showDetail(int id) {
+		
+		SecSql sql = SecSql.from("SELECT *");
+		sql.append("FROM article");
+		sql.append("WHERE id = ?", id);
+		
+		return DBUtil.selectRow(conn, sql);
+	}
 	
 	
 

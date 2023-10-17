@@ -69,33 +69,7 @@ public class App {
 			
 		}
 		else if (cmd.startsWith("article detail")) {
-			
-			if (cmd.equals("article detail")) {
-				System.out.println("게시물 번호를 입력해 주세요.");
-				return 0;
-			}
-			
-			int id = Integer.parseInt(cmd.split(" ")[2]);
-			
-			SecSql sql = SecSql.from("SELECT *");
-			sql.append("FROM article");
-			sql.append("WHERE id = ?", id);
-			
-			Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
-			
-			if (articleMap.isEmpty()) {
-				System.out.printf("%d번 게시물은 존재하지 않습니다.", id);
-				return 0;
-			}
-			
-			Article article = new Article(articleMap);
-			
-			System.out.printf("== %d번 게시물 상세보기 ==\n", id);
-			System.out.printf("번호 : %d\n", article.id);
-			System.out.printf("작성일 : %s\n", article.regDate);
-			System.out.printf("수정일 : %s\n", article.updateDate);
-			System.out.printf("제목 : %s\n", article.title);
-			System.out.printf("내용 : %s\n", article.body);
+			articleController.showDetail(cmd);
 			
 		}
 		else if (cmd.startsWith("article delete")) {

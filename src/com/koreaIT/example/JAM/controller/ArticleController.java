@@ -84,4 +84,32 @@ public class ArticleController {
 		
 	}
 
+	public void showDetail(String cmd) {
+		
+		if (cmd.equals("article detail")) {
+			System.out.println("게시물 번호를 입력해 주세요.");
+			return;
+		}
+		
+		int id = Integer.parseInt(cmd.split(" ")[2]);
+		
+		
+		Article article = articleService.showDetail(id);
+		
+		if (article == null) {
+			System.out.printf("%d번 게시물은 존재하지 않습니다.", id);
+			return;
+		}
+		
+		
+		System.out.printf("== %d번 게시물 상세보기 ==\n", id);
+		System.out.printf("번호 : %d\n", article.id);
+		System.out.printf("작성일 : %s\n", article.regDate);
+		System.out.printf("수정일 : %s\n", article.updateDate);
+		System.out.printf("제목 : %s\n", article.title);
+		System.out.printf("내용 : %s\n", article.body);	
+		
+		
+	}
+
 }

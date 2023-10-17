@@ -48,4 +48,15 @@ public class ArticleService {
 		articleDao.doModify(newTitle, newBody, id);
 	}
 
+	public Article showDetail(int id) {
+		Map<String, Object> articleMap = articleDao.showDetail(id);
+		
+		if(articleMap.isEmpty()) {
+			return null;
+		}
+		
+		return new Article(articleMap);
+		
+	}
+
 }
