@@ -58,56 +58,26 @@ public class App {
 		if (cmd.equals("exit")) {
 			return -1;
 		}
+		if (cmd.equals("member join")) {
+			memberController.doJOin();
+		}
 		if (cmd.equals("article write")) {
 			articleController.doWrite();
-
-		} else if (cmd.equals("article list")) {
+		} 
+		else if (cmd.equals("article list")) {
 			articleController.showList();
-			
-		} else if(cmd.startsWith("article modify")) {
+		} 
+		else if(cmd.startsWith("article modify")) {
 			articleController.doModify(cmd);
-			
 		}
 		else if (cmd.startsWith("article detail")) {
 			articleController.showDetail(cmd);
-			
 		}
 		else if (cmd.startsWith("article delete")) {
-			
-			if (cmd.equals("article delete")) {
-				System.out.println("게시물 번호를 입력해 주세요.");
-				return 0;
-			}
-			
-			int id = Integer.parseInt(cmd.split(" ")[2]);
-			
-			
-			SecSql sql = SecSql.from("SELECT COUNT(*) > 0");
-			sql.append("FROM article");
-			sql.append("WHERE id = ?", id);
-			
-			int articleCount = DBUtil.selectRowIntValue(conn, sql);
-			
-			if (articleCount == 0) {
-				System.out.printf("%d번 게시물은 존재하지 않습니다.", id);
-				return 0;
-			}
-			
-			sql = new SecSql();
-			sql.append("DELETE FROM article");
-			sql.append("WHERE id = ?", id);
-			
-			DBUtil.delete(conn, sql);
-			
-			System.out.printf("%d번 게시물을 삭제했습니다.", id);
-			
+			articleController.doDelete(cmd);
 		}
-		
-		if (cmd.equals("member join")) {
-			
-			memberController.doJOin();
-			
-			
+		else {
+			System.out.println("명령어를 확인해 주세요.");
 		}
 		return 0;
 	}

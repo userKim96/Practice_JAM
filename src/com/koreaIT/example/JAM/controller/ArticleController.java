@@ -97,7 +97,7 @@ public class ArticleController {
 		Article article = articleService.showDetail(id);
 		
 		if (article == null) {
-			System.out.printf("%d번 게시물은 존재하지 않습니다.", id);
+			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 			return;
 		}
 		
@@ -109,6 +109,29 @@ public class ArticleController {
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("내용 : %s\n", article.body);	
 		
+		
+	}
+
+	public void doDelete(String cmd) {
+		
+		if (cmd.equals("article delete")) {
+			System.out.println("게시물 번호를 입력해 주세요.");
+			return;
+		}
+		
+		int id = Integer.parseInt(cmd.split(" ")[2]);
+
+		int articleCount = articleService.articleCount(id);
+		
+		if (articleCount == 0) {
+			System.out.printf("%d번 게시물은 존재하지 않습니다.", id);
+			return;
+		}
+		
+		
+		articleService.doDelete(id);
+		
+		System.out.printf("%d번 게시물을 삭제했습니다.\n", id);
 		
 	}
 
