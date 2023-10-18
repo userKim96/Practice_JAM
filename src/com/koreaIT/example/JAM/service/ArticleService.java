@@ -32,10 +32,6 @@ public class ArticleService {
 		for(Map<String, Object> articleMap : articlesListMap) {
 			articles.add(new Article(articleMap));
 		}
-		
-		
-		
-		
 		return articles;
 	}
 
